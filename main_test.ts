@@ -1,6 +1,7 @@
-import { assertEquals } from "@std/assert";
-import { add } from "./main.ts";
+import { assert } from "@std/assert";
 
-Deno.test(function addTest() {
-  assertEquals(add(2, 3), 5);
+Deno.test(async function addTest() {
+  const response = await fetch("http://localhost:8000/");
+  await response.text();
+  assert(response.ok);
 });
