@@ -5,7 +5,8 @@
     "jsr:@std/internal@^1.0.5": "1.0.5",
     "npm:@types/express@*": "5.0.0",
     "npm:ejs@^3.1.10": "3.1.10",
-    "npm:express@*": "4.21.2"
+    "npm:express@*": "4.21.2",
+    "npm:express@^4.21.2": "4.21.2"
   },
   "jsr": {
     "@std/assert@1.0.11": {
@@ -562,7 +563,8 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/assert@1",
-      "npm:ejs@^3.1.10"
+      "npm:ejs@^3.1.10",
+      "npm:express@^4.21.2"
     ]
   }
 }
