@@ -8,9 +8,10 @@ app.set("view engine", "ejs");
 // use res.render to load up an ejs view file
 
 // index page
-app.get("/", function (req, res) {
+app.get("/", function (_, res) {
   res.render("pages/index");
 });
 
-app.listen(8080);
-console.log("Server is listening on port 8080");
+const port = Deno.env.get("PORT") || 8080;
+app.listen(port);
+console.log(`Server is listening on port ${port}`);
