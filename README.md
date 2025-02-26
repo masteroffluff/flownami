@@ -1,5 +1,10 @@
 # Welcome to Flownami!
 
+> [!TIP]
+> This README gives a good overview of why we're building a Kanban board.
+> If you're already up to speed and are ready to get stuck into the code,
+> head over to [our Wiki].
+
 Flownami is a Kanban-style board for managing tasks, stories, or to-do items.
 
 It's a collaborative project that's being built by the attendees of the
@@ -16,6 +21,7 @@ writing **"vanilla" JavaScript**.
 And if we need to add interactive behaviour in the browser, we'll learn how to
 use the relevant [browser APIs].
 
+[our Wiki]: https://github.com/Software-Crafters-Manchester/flownami/wiki
 [browser APIs]: https://developer.mozilla.org/en-US/docs/Web/API
 
 ## How we (hope to) work
