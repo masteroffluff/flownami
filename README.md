@@ -1,9 +1,9 @@
 # Welcome to Flownami!
 
 > [!TIP]
-> This README gives a good overview of why we're building a Kanban board.
-> If you're already up to speed and are ready to get stuck into the code,
-> head over to [our Wiki].
+> This README gives a good overview of why we're building a Kanban board. If
+> you're already up to speed and are ready to get stuck into the code, head over
+> to [our Wiki].
 
 Flownami is a Kanban-style board for managing tasks, stories, or to-do items.
 
