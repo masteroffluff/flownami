@@ -1,0 +1,10 @@
+<section class="column">
+  <h1><%= name %></h1>
+  <ol class="tasks">
+    <% tasks.forEach(task => {%>
+      <li>
+        <%- include('./task', task) %>
+      </li>
+    <% }) %>
+  </ol>
+</section>

@@ -1,0 +1,13 @@
+<%- include('../../partials/header'); %>
+
+<main class="board">
+  <ol class="columns">
+    <% columns.forEach(column => {%>
+      <li>
+        <%- include('./partials/column', column) %>
+      </li>
+    <% }) %>
+  </ol>
+</main>
+
+<%- include('../../partials/footer'); %>
