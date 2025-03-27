@@ -6,67 +6,51 @@ const app = express();
 app.set("view engine", "ejs");
 
 app.use(express.static("static"));
+app.use(express.urlencoded({ extended: true }));
 
-app.get("/", function (_, res) {
+app.get("/", function (_req, res) {
   res.render("pages/index");
 });
+
+type Task = {
+  name: string;
+};
 
 type Column = {
   name: string;
   tasks: Array<Task>;
 };
 
-type Task = {
-  name: string;
-};
-
-app.get("/board", function (_req, res) {
-  const columns: Array<Column> = [
-    {
-      name: "To Do",
-      tasks: [
-        {
-          name: "Task 1",
-        },
-        {
-          name: "Task 2",
-        },
-        {
-          name: "Task 3",
-        },
-      ],
-    },
-    {
-      name: "Doing",
-      tasks: [
-        {
-          name: "In progress...",
-        },
-      ],
-    },
-    {
-      name: "Done",
-      tasks: [
-        {
-          name: "Finished this one",
-        },
-        {
-          name: "And this one",
-        },
-        {
-          name: "Crikey,",
-        },
-        {
-          name: "Wasn't I...",
-        },
-        {
-          name: "Productive!",
-        },
-      ],
-    },
-  ];
-
+app.get("/board", async function (_req, res) {
+  const columns = await readTasks();
   res.render("pages/board", { columns });
+});
+
+app.get("/tasks/new", (_req, res) => {
+  res.render("pages/create");
+});
+
+async function writeTasks(tasks: Task[]) {
+  await Deno.writeTextFile("./data.json", JSON.stringify(tasks));
+}
+
+async function readTasks() {
+  const data = await Deno.readTextFile("./data.json");
+  return JSON.parse(data);
+}
+
+app.post("/tasks", async (req, res) => {
+  const taskName = req.body.taskName;
+
+  const newTask = { name: taskName };
+
+  const columns = await readTasks();
+
+  columns[0].tasks.push(newTask);
+
+  await writeTasks(columns);
+
+  res.redirect("/board");
 });
 
 const port = Deno.env.get("PORT") || 8080;
