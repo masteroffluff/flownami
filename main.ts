@@ -55,6 +55,24 @@ app.post("/tasks", async (req, res) => {
 
   res.redirect("/board");
 });
+app.put("/tasks", async (req, res) => {
+  const {id, name, location} = req.body;
+
+  const task:Task = {name, id}
+  const columns = await readTasks();
+
+  columns.forEach((col:Column)=>{
+    col.tasks = col.tasks.filter((t:Task)=>t.id!==id)
+    if(col.name === location){
+      col.tasks.push(task);
+    }
+  })
+
+  await writeTasks(columns);
+
+  res.redirect("/board");
+});
+
 
 if (import.meta.main) {
   const port = Deno.env.get("PORT") || 8080;
