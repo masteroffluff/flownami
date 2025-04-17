@@ -9,7 +9,7 @@ app.set("view engine", "ejs");
 
 app.use(express.static("static"));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); 
+app.use(express.json());
 
 app.get("/", function (_req, res) {
   res.render("pages/index");
@@ -43,6 +43,19 @@ async function readTasks() {
   return JSON.parse(data);
 }
 
+async function updateTask(id: UUID, name: string, location: string) {
+  const task: Task = { name, id };
+  const columns = await readTasks();
+
+  columns.forEach((col: Column) => {
+    col.tasks = col.tasks.filter((t: Task) => t.id !== id);
+    if (col.name === location) {
+      col.tasks.push(task);
+    }
+  });
+  await writeTasks(columns);
+}
+
 app.post("/tasks", async (req, res) => {
   const taskName = req.body.taskName;
 
@@ -56,25 +69,14 @@ app.post("/tasks", async (req, res) => {
 
   res.redirect("/board");
 });
+
 app.put("/tasks", async (req, res) => {
-  console.log(req.body)
-  const {id, name, location} = req.body;
+  const { id, name: newName, location: newLocation } = req.body;
 
-  const task:Task = {name, id}
-  const columns = await readTasks();
-  
-  columns.forEach((col:Column)=>{
-    col.tasks = col.tasks.filter((t:Task)=>t.id!==id)
-    if(col.name === location){
-      col.tasks.push(task);
-    }
-  })
-  //console.log(columns)
-  await writeTasks(columns);
+  await updateTask(id, newName, newLocation);
 
-  res.status(200).json({ message: 'success' });
+  res.status(200).json({ message: "success" });
 });
-
 
 if (import.meta.main) {
   const port = Deno.env.get("PORT") || 8080;
