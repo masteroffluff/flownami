@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   const selectDropDown = document.querySelectorAll(".update-select");
-  selectDropDown.forEach((button) => {
-    button.addEventListener("change", async (event) => {
+  selectDropDown.forEach((select) => {
+    select.selectedIndex = 0
+    select.addEventListener("change", async (event) => {
       event.preventDefault();
       const itemId = event.target.getAttribute("data-id");
-      const name = event.target.getAttribute("data-name");
+      const name = decodeURIComponent(event.target.getAttribute("data-name"));
       const value = event.target.value;
-      console.log(`Item to change: ${itemId} ${value}`);
       const url = "./tasks";
       try {
         const response = await fetch(url,{
