@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const response = await fetch(url,{
             method: "PUT",
-            headers: { // Corrected from 'header' to 'headers'
+            headers: { 
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ id: itemId, location:value, name}),
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!response.ok) {
           throw new Error(`Response status: ${response.status}`);
         }
-
+        globalThis.location.reload();
       } catch (error) {
         console.error(error.message);
       }

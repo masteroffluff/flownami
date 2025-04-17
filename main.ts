@@ -72,7 +72,7 @@ app.put("/tasks", async (req, res) => {
   //console.log(columns)
   await writeTasks(columns);
 
-  res.status(200).json({ redirectTo: '/board' });
+  res.status(200).json({ message: 'success' });
 });
 
 
