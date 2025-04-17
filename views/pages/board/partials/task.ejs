@@ -1,8 +1,13 @@
 <article class="task">
   <h1><%= name %></h1>
-  <select class="update-select" data-id=<%= id %>>
-    <option>To Do</option>
-    <option>Doing</option>
-    <option>Done</option>
+  <select class="update-select" data-id=<%= id %> data-name=<%= name %>>
+    <option disabled selected value> -- move to -- </option>
+    <% ["To Do","Doing","Done"].filter((n)=>n!==column)
+      .forEach((n) => { %>
+        <option><%= n %></option>
+    <% }); %>
   </select>
 </article>
+
+
+

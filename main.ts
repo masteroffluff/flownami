@@ -1,6 +1,6 @@
 // @ts-types="npm:@types/express"
-import { randomUUID } from "node:crypto";
-import { UUID } from "node:crypto";
+import { randomUUID, UUID } from "node:crypto";
+
 import express from "npm:express";
 
 const app = express();
@@ -9,6 +9,7 @@ app.set("view engine", "ejs");
 
 app.use(express.static("static"));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); 
 
 app.get("/", function (_req, res) {
   res.render("pages/index");
@@ -56,21 +57,22 @@ app.post("/tasks", async (req, res) => {
   res.redirect("/board");
 });
 app.put("/tasks", async (req, res) => {
+  console.log(req.body)
   const {id, name, location} = req.body;
 
   const task:Task = {name, id}
   const columns = await readTasks();
-
+  
   columns.forEach((col:Column)=>{
     col.tasks = col.tasks.filter((t:Task)=>t.id!==id)
     if(col.name === location){
       col.tasks.push(task);
     }
   })
-
+  //console.log(columns)
   await writeTasks(columns);
 
-  res.redirect("/board");
+  res.status(200).json({ redirectTo: '/board' });
 });
 
 
