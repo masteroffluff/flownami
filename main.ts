@@ -56,6 +56,15 @@ async function updateTask(id: UUID, name: string, location: string) {
   await writeTasks(columns);
 }
 
+async function removeTask(id: UUID) {
+  const columns = await readTasks();
+
+  columns.forEach((col: Column) => {
+    col.tasks = col.tasks.filter((t: Task) => t.id !== id);
+  });
+  await writeTasks(columns);
+}
+
 app.post("/tasks", async (req, res) => {
   const taskName = req.body.taskName;
 
@@ -74,6 +83,18 @@ app.put("/tasks", async (req, res) => {
   const { id, name: newName, location: newLocation } = req.body;
 
   await updateTask(id, newName, newLocation);
+
+  res.status(200).json({ message: "success" });
+});
+
+app.delete("/tasks/:id", async (req, res) => {
+
+  const id = req.params.id as UUID
+  if(!id){
+    res.status(404).json("Invalid type")
+    return 
+  }
+  await removeTask(id);
 
   res.status(200).json({ message: "success" });
 });
