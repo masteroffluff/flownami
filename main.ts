@@ -18,23 +18,26 @@ app.get("/", function (_req, res) {
 type Task = {
   name: string;
   id: UUID;
+  column: string;
 };
-
 type Column = {
   name: string;
   tasks: Array<Task>;
 };
 
+type TaskMap = Record<UUID, Task>;
+
 app.get("/board", async function (_req, res) {
-  const columns = await readTasks();
-  res.render("pages/board", { columns });
+  const taskMap = await readTasks();
+
+  res.render("pages/board", { taskMap });
 });
 
 app.get("/tasks/new", (_req, res) => {
   res.render("pages/create");
 });
 
-async function writeTasks(tasks: Task[]) {
+async function writeTasks(tasks: TaskMap) {
   await Deno.writeTextFile("./data.json", JSON.stringify(tasks));
 }
 
@@ -43,38 +46,35 @@ async function readTasks() {
   return JSON.parse(data);
 }
 
-async function updateTask(id: UUID, name: string, location: string) {
-  const task: Task = { name, id };
-  const columns = await readTasks();
+async function updateTask(id: UUID, name: string, column: string) {
+  
+  const taskMap = await readTasks();
 
-  columns.forEach((col: Column) => {
-    col.tasks = col.tasks.filter((t: Task) => t.id !== id);
-    if (col.name === location) {
-      col.tasks.push(task);
-    }
-  });
-  await writeTasks(columns);
+  taskMap[id].name = name
+  taskMap[id].column = column
+
+  await writeTasks(taskMap);
 }
 
 async function removeTask(id: UUID) {
-  const columns = await readTasks();
+  const taskMap = await readTasks();
 
-  columns.forEach((col: Column) => {
-    col.tasks = col.tasks.filter((t: Task) => t.id !== id);
-  });
-  await writeTasks(columns);
+  taskMap.delete(id)
+
+  await writeTasks(taskMap);
+}
+
+async function addTask( name: string, column: string){
+  const newTask:Task = { name, id: randomUUID(), column };
+  const taskMap = await readTasks();
+  taskMap[newTask.id]=newTask
+  await writeTasks(taskMap);
 }
 
 app.post("/tasks", async (req, res) => {
   const taskName = req.body.taskName;
 
-  const newTask = { name: taskName, id: randomUUID() };
-
-  const columns = await readTasks();
-
-  columns[0].tasks.push(newTask);
-
-  await writeTasks(columns);
+  await addTask(taskName, "To do")
 
   res.redirect("/board");
 });
