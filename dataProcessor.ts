@@ -1,20 +1,14 @@
 import { UUID } from "node:crypto";
-
 type Task = {
   name: string;
   id: UUID;
     column:string;
 };
-
-
-
 type Column = {
     name: string;
     tasks: Array<Task>;
   };
 
-
-  
 async function deflibulateData(){
     const data = await Deno.readTextFile("./data.json");
     const columns = JSON.parse(data);
@@ -29,5 +23,6 @@ async function deflibulateData(){
 
     await Deno.writeTextFile("./new_data.json", JSON.stringify(newData));
 }
+
 
 deflibulateData();

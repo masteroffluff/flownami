@@ -26,24 +26,34 @@ type Column = {
 };
 
 type TaskMap = Record<UUID, Task>;
-
-app.get("/board", async function (_req, res) {
-  const taskMap = await readTasks();
-
-  res.render("pages/board", { taskMap });
-});
-
-app.get("/tasks/new", (_req, res) => {
-  res.render("pages/create");
-});
-
+interface ColumnMap {
+  [key: string]: Column;
+}
 async function writeTasks(tasks: TaskMap) {
   await Deno.writeTextFile("./data.json", JSON.stringify(tasks));
 }
 
 async function readTasks() {
   const data = await Deno.readTextFile("./data.json");
+  
   return JSON.parse(data);
+}
+
+
+async function getBoard(){
+  const output:ColumnMap = {}
+  const taskMap:TaskMap = await readTasks();
+
+  Object.values(taskMap).forEach((task) => {
+    const { column } = task;
+    if (!output[column]) {
+      output[column] = { name: column, tasks: [] };
+    }
+    output[column].tasks.push(task);
+  });
+
+  return Object.values(output);
+  
 }
 
 async function updateTask(id: UUID, name: string, column: string) {
@@ -105,4 +115,15 @@ if (import.meta.main) {
   console.log(`Server is listening on port ${port}`);
 }
 
+
+
+app.get("/board", async function (_req, res) {
+  const columns = await getBoard();
+  console.log(columns)
+  res.render("pages/board", { columns });
+});
+
+app.get("/tasks/new", (_req, res) => {
+  res.render("pages/create");
+});
 export default app;
