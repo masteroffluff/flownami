@@ -6,6 +6,7 @@ import { TaskRepo } from "../data.ts";
 import { Task } from "../tasks/Task.ts";
 
 Deno.test("generate a Board", async () => {
+  // arrange
   const fakeTask: Task = {
     id: "some-id",
     name: "Some Name",
@@ -20,8 +21,11 @@ Deno.test("generate a Board", async () => {
     readTasks: readTasksSpy,
   } as unknown as TaskRepo;
 
+  // act
+
   const board = await generateBoard(taskRepo);
 
+  // assert
   const todoColumn = {
     name: "To Do",
     tasks: [
@@ -40,3 +44,4 @@ Deno.test("generate a Board", async () => {
 
   assertArrayIncludes(board, expectedBoard);
 });
+
