@@ -2,28 +2,22 @@
   {
     "name": "To Do",
     "tasks": [
-      { "name": "Hello" },
-      { "name": "Test" },
-      { "name": "Mega Test" },
-      { "name": "Test 4" },
-      { "name": "asdf" },
-      { "name": "Hello world" },
-      { "name": "TEasting" },
-      { "name": "Tasks" },
-      { "name": "Refactor" },
-      { "name": "Testytest" },
-      { "name": "Go" }
+      {
+        "id": "e6623c8e-9cb7-4eb5-bb7a-0dd2b97a5297",
+        "name": "New Task 1",
+        "column": "To Do"
+      }
     ]
   },
-  { "name": "Doing", "tasks": [{ "name": "In progress..." }] },
   {
-    "name": "Done",
+    "name": "Doing",
     "tasks": [
-      { "name": "Finished this one" },
-      { "name": "And this one" },
-      { "name": "Crikey," },
-      { "name": "Wasn't I..." },
-      { "name": "Productive!" }
+      {
+        "id": "bc6e3949-f2ed-4fa2-b4db-ab2c24104a1e",
+        "name": "New Task",
+        "column": "Doing"
+      }
     ]
-  }
+  },
+  { "name": "Done", "tasks": [] }
 ]
