@@ -1,4 +1,4 @@
-import { readTasks, TaskRepo, writeTasks } from "../data.ts";
+import { TaskRepo } from "../data.ts";
 import { Task } from "./Task.ts";
 
 export async function addNewTask(taskRepo: TaskRepo, taskName: string) {
